@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/booked_workshops.dart';
+import 'package:flutter_application_1/models/user.dart';
+
 import '../models/workshop.dart';
 import '../widgets/confirmation_dialog.dart';
 
@@ -63,11 +66,19 @@ class _DetailScreenState extends State<DetailScreen> {
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
+                BookedWorkshops.addWorkshop({
+                  'title': workshop.title,
+                  'date': workshop.date,
+                });
                 showDialog(
-                  context: context,
-                  builder: (_) => ConfirmationDialog(userEmail: ''),
+      
+                   context: context,
+                   builder: (context) => ConfirmationDialog(
+                   message: "Your spot is booked!",
+                   ),
                 );
+               
               },
               child: Text('Book Now', style: TextStyle(fontSize: 16)),
             ),

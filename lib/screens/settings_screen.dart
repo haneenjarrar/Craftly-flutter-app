@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_1/models/booked_workshops.dart';
 import 'package:flutter_application_1/services/auth_service.dart';
 import 'package:flutter_application_1/utils/app_styles.dart';
 import 'package:flutter_application_1/utils/widgets_helper.dart';
@@ -48,7 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 _buildSidebarItem(0, Icons.bookmark, 'Booked Workshops'),
                 _buildSidebarItem(1, Icons.person, 'Profile'),
-                _buildSidebarItem(2, Icons.history, 'Previous Workshops'),
+                
                 const Divider(height: 40),
                 ListTile(
                   leading: const Icon(Icons.logout, color: Colors.red),
@@ -97,30 +98,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return _buildBookedWorkshops();
       case 1:
         return _buildProfile(user);
-      case 2:
-        return _buildPreviousWorkshops();
+     
       default:
         return const SizedBox();
     }
   }
+Widget _buildBookedWorkshops() {
+  final booked = BookedWorkshops.booked;
 
-  Widget _buildBookedWorkshops() {
-    // TODO: Load booked workshops from Firestore or local storage
-    // For now, showing empty state
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Booked Workshops',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: AppStyles.lightPurple,
-            ),
+  return SingleChildScrollView(
+    padding: const EdgeInsets.all(20),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Booked Workshops',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppStyles.lightPurple,
           ),
-          const SizedBox(height: 20),
+        ),
+        const SizedBox(height: 20),
+
+        // ✅ EMPTY STATE
+        if (booked.isEmpty)
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -138,11 +140,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
+          )
+
+        // ✅ BOOKED WORKSHOPS LIST
+        else
+          Column(
+            children: List.generate(booked.length, (index) {
+              final workshop = booked[index];
+
+              return Card(
+                margin: const EdgeInsets.only(bottom: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ListTile(
+                  title: Text(
+                    workshop['title'],
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(workshop['date'] ?? ''),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.cancel, color: Colors.red),
+                    onPressed: () {
+                      BookedWorkshops.removeWorkshop(index);
+
+                      // 🔄 refresh UI
+                      (context as Element).markNeedsBuild();
+                    },
+                  ),
+                ),
+              );
+            }),
           ),
-        ],
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
+
 
   Widget _buildProfile(User? user) {
     return SingleChildScrollView(
@@ -224,45 +258,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildPreviousWorkshops() {
-    // TODO: Load previous workshops from Firestore or local storage
-    // For now, showing empty state
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Previous Workshops',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: AppStyles.lightPurple,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.history, size: 64, color: Colors.grey[400]),
-                const SizedBox(height: 16),
-                Text(
-                  'No previous workshops',
-                  style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Completed workshops will appear here',
-                  style: TextStyle(fontSize: 14, color: Colors.grey[500]),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Future<void> _handleSignOut() async {
     final confirm = await showDialog<bool>(

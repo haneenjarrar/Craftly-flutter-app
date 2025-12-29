@@ -109,6 +109,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: AppStyles.primaryButtonStyle,
                   child: const Text('Log In', style: AppStyles.buttonTextStyle),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Don't have an account? "),
+                    TextButton(
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/signup'),
+                      child: const Text('Sign Up'),
+                    ),
+                  ],
+                ),
                 TextButton(
                   onPressed: () =>
                       Navigator.pushNamed(context, '/forgot-password'),

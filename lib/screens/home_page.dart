@@ -79,15 +79,17 @@ class _HomePageState extends State<HomePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Craftly',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                        Row(children: [
+                          Text(
+                            'Craftly',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-
+                          Icon(Icons.stars, color: Colors.white),
+                        ]),
                         Text(
                           'Welcome! ${user.name}',
                           style: TextStyle(color: Colors.white70),
@@ -96,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     IconButton(
                       icon: const Icon(
-                        Icons.settings,
+                        Icons.menu,
                         color: Colors.white,
                         size: 30,
                       ),
