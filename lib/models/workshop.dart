@@ -21,7 +21,6 @@ class Workshop {
   final String instructor;
   final String instructorBio;
   final String contactEmail;
-  final String contactPhone;
   final double price;
   final String duration; 
   final String level; 
@@ -47,7 +46,6 @@ class Workshop {
     required this.instructor,
     required this.instructorBio,
     required this.contactEmail,
-    required this.contactPhone,
     required this.price,
     required this.duration,
     required this.level,

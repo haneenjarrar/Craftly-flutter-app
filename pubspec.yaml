@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   firebase_core: ^4.2.1
   firebase_auth: ^6.1.2
+  cloud_firestore: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +64,12 @@ flutter:
   assets:
      - images/Craftly.png
      - images/background.png
+     - images/nadeen.png
+     - images/floral.png
+     - images/candle.png
+     - images/potterymug.png
+     - images/perfume.png
+     - images/painting.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

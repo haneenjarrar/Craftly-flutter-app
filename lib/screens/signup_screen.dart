@@ -1,5 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/user.dart' as app_model;
+import 'package:flutter_application_1/services/auth_service.dart';
+import 'package:flutter_application_1/utils/validators.dart';
+import 'package:flutter_application_1/utils/error_handling.dart';
+import 'package:flutter_application_1/utils/app_styles.dart';
+import 'package:flutter_application_1/utils/widgets_helper.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -9,133 +14,197 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
 
- 
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleSignUp() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    try {
+      await AuthService().signUp(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      if (mounted) {
+        Navigator.pushReplacementNamed(
+          context,
+          '/verification',
+          arguments: _emailController.text.trim(),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        WidgetsHelper.showSnackBar(
+          context,
+          ErrorHandling.getAuthErrorMessage(e),
+          isError: true,
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        WidgetsHelper.showSnackBar(
+          context,
+          ErrorHandling.getErrorMessage(e),
+          isError: true,
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 247, 247, 247),
-      appBar: AppBar(
-        title: const Text("Create Account"),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: Colors.grey[800],
-      ),
-
+      backgroundColor: AppStyles.backgroundColor,
+      appBar: AppStyles.buildAppBar("Create Account"),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(30.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Icon(Icons.stars
-              , size: 60, color: Color.fromARGB(255, 57, 3, 57)),
-              const SizedBox(height: 20.0),
-              Text( 'Join Craftly',
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AppStyles.headerIcon,
+                const SizedBox(height: 20.0),
+                const Text(
+                  'Join Craftly',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: const Color.fromARGB(255, 57, 3, 57),
-                  )),
-              const SizedBox(height: 5.0),
-              Text("Start your crafting journey with us!",
+                  style: AppStyles.titleStyle,
+                ),
+                const SizedBox(height: 5.0),
+                const Text(
+                  "Start your crafting journey with us!",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[600],
-                  )),
-              const SizedBox(height: 32.0),
-              Row(
-                children: const [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'First Name',
-                        border: OutlineInputBorder(
-                          
+                  style: AppStyles.subtitleStyle,
+                ),
+                const SizedBox(height: 32.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _firstNameController,
+                        decoration: const InputDecoration(
+                          labelText: 'First Name',
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (v) =>
+                            Validators.validateRequired(v, 'first name'),
+                      ),
+                    ),
+                    const SizedBox(width: 16.0),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _lastNameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Last Name',
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (v) =>
+                            Validators.validateRequired(v, 'first name'),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24.0),
+
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: Validators.validateEmail,
+                ),
+
+                const SizedBox(height: 24.0),
+
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                  ),
+                  obscureText: true,
+                  onChanged: (value) {
+                    // Re-validate confirm password when password changes
+                    if (_confirmPasswordController.text.isNotEmpty) {
+                      _formKey.currentState?.validate();
+                    }
+                  },
+                  validator: Validators.validatePassword,
+                ),
+
+                const SizedBox(height: 24.0),
+
+                TextFormField(
+                  controller: _confirmPasswordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Confirm Password',
+                    border: OutlineInputBorder(),
+                  ),
+                  obscureText: true,
+
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please confirm your password';
+                    }
+                    if (value != _passwordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
+                ),
+
+                const SizedBox(height: 38.0),
+                ElevatedButton(
+                  onPressed: _handleSignUp,
+                  style: AppStyles.primaryButtonStyle,
+                  child: const Text(
+                    'Sign Up',
+                    style: AppStyles.buttonTextStyle,
+                  ),
+                ),
+                const SizedBox(height: 15.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already have an account?",
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/login');
+                      },
+                      child: Text(
+                        "Log In",
+                        style: TextStyle(
+                          color: Colors.purple[800],
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      keyboardType: TextInputType.emailAddress,
                     ),
-                  ),
-                  SizedBox(width: 16.0),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Last Name',
-                        border: OutlineInputBorder(
-                        ),
-                      ),
-                      obscureText: true,
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 24.0),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(
-                  ),
+                  ],
                 ),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(height: 24.0),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(
-                  ),
-                ),
-                obscureText: true,
-              ),
-              const SizedBox(height: 38.0),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/home');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF8A008A),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 32,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                child: const Text(
-                  'Sign Up',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                   Text("Already have an account?", style: TextStyle(color: Colors.grey[700])),
-                  TextButton(onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/login');
-                  }, 
-                    child: Text(
-                      "Log In",
-                      style: TextStyle(
-                        color: Colors.purple[800],
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

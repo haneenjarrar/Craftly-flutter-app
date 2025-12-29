@@ -1,8 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/user.dart' as app_model;
-import 'package:flutter_application_1/screens/home_page.dart';
-import 'package:flutter_application_1/screens/login_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -35,7 +32,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             child: ElevatedButton(
               
               onPressed: () {
-                Navigator.pushNamed(context, '/signup');
+                Navigator.pushNamed(context, '/login');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF8A008A),

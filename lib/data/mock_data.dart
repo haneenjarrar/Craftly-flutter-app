@@ -1,7 +1,5 @@
 import '../models/workshop.dart';
 
-// --- MOCK DATA ---
-
 final List<Workshop> availableWorkshops = [
   Workshop(
     id: '1',
@@ -9,22 +7,21 @@ final List<Workshop> availableWorkshops = [
     description:
         'Learn the basics of wire wrapping to create stunning jewelry pieces.',
     fullDescription:
-        'Join Zein for a comprehensive wire-wrapping workshop where you\'ll learn techniques to create unique pendants and earrings.',
-    imageUrl: 'https://placehold.co/400x300/F0F0F0/240046/white?text=Jewelry',
+        'Join Nadeen for a comprehensive wire-wrapping workshop where you\'ll learn techniques to create unique pendants and earrings.',
+    imageUrl: 'images/nadeen.png',
     category: 'Jewelry',
     location: 'Amman, Jordan',
-    address: 'Swefieh Village, Second Floor',
+    address: 'Zawyeh Space, Al-Weibdeh',
     date: 'Thursday, Jan 15, 2026',
-    time:
-        '3 hours', // Duration for the card, actual duration is in 'duration' field
+    time: '2 hours',
     rating: 4.9,
-    instructor: 'Zein',
+    instructor: 'Nadeen',
     instructorBio:
-        'Zein is an expert jeweler with over 15 years of experience, known for her intricate wire-wrapped designs.',
-    contactEmail: 'www.zeinjewelry.com',
-    contactPhone: '+962 79 0444 024',
-    price: 65.00,
-    duration: '3 hours',
+        'Nadeen is an expert jeweler with over 15 years of experience, known for her intricate wire-wrapped designs.',
+    contactEmail: 'info@nadeenjewelry.com',
+
+    price: 15.00,
+    duration: '2 hours',
     level: 'Beginner',
     whatYoullLearn: [
       'Basic wire manipulation and shaping',
@@ -33,15 +30,15 @@ final List<Workshop> availableWorkshops = [
     ],
     schedule: [
       WorkshopSchedule(
-        title: 'Session 1: Introduction (30 min)',
+        title: 'Session 1: Introduction (20 min)',
         activities: ['Wire types and gauges', 'Tool usage demo'],
       ),
       WorkshopSchedule(
-        title: 'Session 2: Practice (1 hour)',
+        title: 'Session 2: Practice (40 min)',
         activities: ['Basic wraps', 'Forming pendants'],
       ),
       WorkshopSchedule(
-        title: 'Session 3: Project (1.5 hours)',
+        title: 'Session 3: Project (1 hour)',
         activities: ['Complete a wire-wrapped piece'],
       ),
     ],
@@ -56,20 +53,19 @@ final List<Workshop> availableWorkshops = [
         'Learn the art of flower arrangement and create beautiful bouquets.',
     fullDescription:
         'Join Amina to explore floral design principles and hands-on bouquet creation using seasonal flowers.',
-    imageUrl:
-        'https://placehold.co/400x300/F0F0F0/3C0046/white?text=Floral+Design',
+    imageUrl: 'images/floral.png',
     category: 'Floral Design',
     location: 'Artisan',
     address: 'Al-DAMMAM St., Amman, Jordan',
-    date: 'Monday, Dec 28, 2026',
+    date: 'Sunday, Dec 28, 2026',
     time: '2.5 hours',
     rating: 4.7,
     instructor: 'Amina Khoury',
     instructorBio:
         'Amina is a skilled florist with a passion for creating stunning floral arrangements and teaching others the art of flower design.',
     contactEmail: 'amina.floral@example.com',
-    contactPhone: '+962 78 444 5566',
-    price: 40.00,
+
+    price: 20.00,
     duration: '2.5 hours',
     level: 'Beginner',
     whatYoullLearn: [
@@ -103,19 +99,18 @@ final List<Workshop> availableWorkshops = [
         'Create your own scented candles using various techniques and molds.',
     fullDescription:
         'Discover the art of candle making with Sara, learning to craft beautiful and aromatic candles for your home or as gifts.',
-    imageUrl:
-        'https://placehold.co/400x300/F0F0F0/460046/white?text=Candle+Making',
+    imageUrl: 'images/candle.png',
     category: 'Candle Making',
     location: 'Mamasima Studio',
     address: 'Swefieh Village, -1st Floor',
-    date: 'Saturday, Feb 3, 2026',
+    date: 'Tuesday, Feb 3, 2026',
     time: '3 hours',
     rating: 4.8,
     instructor: 'Ayah Hafez',
     instructorBio:
         'Ayah is an experienced candle maker who specializes in creating unique scents and decorative candles.',
     contactEmail: 'ayah.candles@example.com',
-    contactPhone: '+962 79 089 8602',
+
     price: 55.00,
     duration: '3 hours',
     level: 'All Levels',
@@ -150,18 +145,18 @@ final List<Workshop> availableWorkshops = [
         'Craft unique ceramic mugs using slab and coil techniques without a wheel.',
     fullDescription:
         'Learn foundational hand-building techniques to create functional ceramic mugs. No prior experience with pottery is needed, perfect for beginners.',
-    imageUrl: 'https://placehold.co/400x300/F0F0F0/4C0046/white?text=Pottery',
+    imageUrl: 'images/potterymug.png',
     category: 'Pottery',
     location: 'My Pottery Shop',
     address: 'Mohammed Dawood Suliman St.no.8, Amman, Jordan',
-    date: 'Sunday, Jan 23, 2026',
+    date: 'Friday, Jan 23, 2026',
     time: '2 hours',
     rating: 4.6,
     instructor: 'Laila Hammad',
     instructorBio:
         'Laila is a passionate potter and sculptor who loves introducing people to the meditative art of working with clay.',
     contactEmail: 'laila.clay@example.com',
-    contactPhone: '+962 79 555 6677',
+
     price: 25.00,
     duration: '2 hours',
     level: 'Beginner',
@@ -202,7 +197,7 @@ final List<Workshop> availableWorkshops = [
         'Craft personalized perfumes using essential oils and fragrance blending techniques.',
     fullDescription:
         'Join Hana in a hands-on perfume-making workshop where you\'ll learn to blend scents and create your own unique fragrance.',
-    imageUrl: 'https://placehold.co/400x300/F0F0F0/4C0046/white?text=Pottery',
+    imageUrl: 'images/perfume.png',
     category: 'Scent Design',
     location: 'Etter Perfumery',
     address: 'Mohammed Dawood Suliman St.no.8, Amman, Jordan',
@@ -213,7 +208,7 @@ final List<Workshop> availableWorkshops = [
     instructorBio:
         'Muhannad is an expert perfumer with a passion for teaching the art of fragrance creation.',
     contactEmail: 'muhannad.alattar@example.com',
-    contactPhone: '+962 79 555 6677',
+
     price: 25.00,
     duration: '3 hours',
     level: 'Beginner',
@@ -244,15 +239,63 @@ final List<Workshop> availableWorkshops = [
     spotsAvailable: 3,
     totalSpots: 15,
   ),
+  Workshop(
+    id: '6',
+    title: 'Painting with Watercolors',
+    description:
+        'Learn to paint beautifully using watercolor techniques.',
+    fullDescription:
+        'Join Kareem in a hands-on painting workshop where you\'ll learn to blend colors and create stunning paintings.',
+    imageUrl: 'images/painting.png',
+    category: 'Painting',
+    location: 'Manara Arts & Culture',
+    address: 'Dirar Bin Al-Azwar St., Amman, Jordan',
+    date: 'Tuesday, Dec 24, 2025',
+    time: '3 hours',
+    rating: 4.8,
+    instructor: 'Kareem Al-Hamdan',
+    instructorBio:
+        'Kareem is a skilled watercolor artist with a passion for teaching watercolor painting.',
+    contactEmail: 'faisal@manaraculture.com',
+
+    price: 30.00,
+    duration: '3 hours',
+    level: 'Beginner',
+    whatYoullLearn: [
+      'Understanding watercolor techniques',
+      'Blending colors',
+      'Creating painting compositions',
+      'Finishing and preserving your artwork',
+    ],
+    schedule: [
+      WorkshopSchedule(
+        title: 'Watercolor Techniques & Basics (30 min)',
+        activities: [
+          'Understanding watercolor techniques',
+          'Introduction to watercolor tools',
+        ],
+      ),
+      WorkshopSchedule(
+        title: 'Blending Colors (1.5 hours)',
+        activities: ['Mixing watercolors', 'Creating balanced color palettes'],
+      ),
+      WorkshopSchedule(
+        title: 'Finishing Touches (30 min)',
+        activities: ['framing your artwork and letting it dry'],
+      ),
+    ],
+    materials: ['Watercolors', 'Brushes', 'Paper', 'Palette'],
+    spotsAvailable: 6,
+    totalSpots: 10,
+  ),
 ];
 
-// List of categories
 final List<String> categories = [
   'All',
   'Jewelry',
-  'Knitting',
+  'Candle Making',
   'Pottery',
   'Painting',
-  'Drawing',
-  'Sculpture',
+  'Floral Design',
+  'Scent Design',
 ];
