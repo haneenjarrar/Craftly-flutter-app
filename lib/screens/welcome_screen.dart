@@ -10,7 +10,8 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
  
-  
+  /* first screen, i used a stateful widget and a stack body on top of it an image asset then an elevated button that
+  navigates to the login screen */
 
 
   @override

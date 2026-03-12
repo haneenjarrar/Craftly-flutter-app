@@ -7,8 +7,6 @@ import 'screens/login_screen.dart';
 import 'screens/home_page.dart';
 import 'screens/verification_screen.dart';
 import 'screens/forgot_password_screen.dart';
-import 'screens/reset_password_screen.dart';
-import 'screens/settings_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -29,6 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.purple),
       home: const WelcomeScreen(),
       routes: {
+        '/welcome': (context) => const WelcomeScreen(),
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignUpScreen(),
         '/home': (context) => const HomePage(),
@@ -39,12 +38,7 @@ class MyApp extends StatelessWidget {
           return VerificationScreen(email: email);
         },
         '/forgot-password': (context) => const ForgotPasswordScreen(),
-        '/reset-password': (context) {
-          final actionCode =
-              ModalRoute.of(context)?.settings.arguments as String?;
-          return ResetPasswordScreen(actionCode: actionCode);
-        },
-        '/settings': (context) => const SettingsScreen(),
+       
       },
     );
   }

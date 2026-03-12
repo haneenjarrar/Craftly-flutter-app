@@ -35,31 +35,43 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         await _authService.resetPassword(email: _emailController.text.trim());
 
         if (mounted) {
-          // Show success dialog with option to go to reset screen
+          
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: const Text('Reset Email Sent'),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              title: Row(
+                children: const [
+                  Icon(Icons.check_circle, color: Colors.green, size: 28),
+                  SizedBox(width: 10),
+                  Text('Email Sent!'),
+                ],
+              ),
               content: Text(
-                'A password reset link has been sent to ${_emailController.text.trim()}. '
-                'Please check your email and click the link. '
-                'After clicking the link, you can set your new password.',
+                'A password reset link has been sent to:\n\n'
+                '${_emailController.text.trim()}\n\n'
+                'Please check your email and click the link to reset your password.',
+                style: TextStyle(fontSize: 15),
               ),
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop(); // Go back to login
+                    Navigator.of(context).pop(); 
+                    Navigator.of(context).pop(); 
                   },
-                  child: const Text('Back to Login'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    // Navigate to reset password screen
-                    Navigator.pushReplacementNamed(context, '/reset-password');
-                  },
-                  child: const Text('Set New Password'),
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppStyles.primaryColor,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    'OK',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
                 ),
               ],
             ),

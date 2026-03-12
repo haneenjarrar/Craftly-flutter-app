@@ -143,7 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   obscureText: true,
                   onChanged: (value) {
-                    // Re-validate confirm password when password changes
+                    
                     if (_confirmPasswordController.text.isNotEmpty) {
                       _formKey.currentState?.validate();
                     }

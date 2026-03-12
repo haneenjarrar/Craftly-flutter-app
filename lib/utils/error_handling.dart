@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
+/*basically this class handles error messages for Firebase Authentication exceptions by turning them into user friendly messages
+noteee: switches are based on firebase authentication’s documented exception codes*/
 class ErrorHandling {
   static String getAuthErrorMessage(FirebaseAuthException e) {
     switch (e.code) {

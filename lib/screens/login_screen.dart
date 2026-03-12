@@ -12,22 +12,24 @@ class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
-
+/* login screen i used stateful widget and text editing controllers to manage user input and form to validate the input
+connected it to firebase authentication */
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+   /* REMEMBER: dispose function cleans memory of form when using controllers */
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
-
+   /* basically checking if the form is valid before attempting to log in and mounted is if
+   the widget is still alive  */
   Future<void> _handleLogin() async {
     if (!_formKey.currentState!.validate()) return;
-
+     /*checks if there is an error or not and returns true */
     try {
       await AuthService().signIn(
         email: _emailController.text.trim(),
@@ -54,7 +56,10 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
-
+    /* for login the body is center with singlechildscroll child which has a form child and form has a 
+    column then the icon,etc and textfields with elevated button and 
+    textbuttons
+    for signup and reset , the styles are in the app styles class and validators are in the validators class */
   @override
   Widget build(BuildContext context) {
     return Scaffold(

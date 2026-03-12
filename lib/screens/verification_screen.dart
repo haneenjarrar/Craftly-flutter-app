@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/auth_service.dart';
+import 'package:flutter_application_1/utils/app_styles.dart';
 
 class VerificationScreen extends StatefulWidget {
   final String email;
@@ -19,23 +20,23 @@ class _VerificationScreenState extends State<VerificationScreen> {
   @override
   void initState() {
     super.initState();
-    _checkVerificationStatus();
-    // Periodically check verification status
-    _startVerificationCheck();
+    /* auto-checking for verification every 3 seconds*/
+        _startAutoCheck();
   }
 
-  void _startVerificationCheck() {
-    // Check every 3 seconds if email is verified
+  
+  void _startAutoCheck() {
     Future.delayed(const Duration(seconds: 3), () {
       if (mounted && !_isVerified) {
         _checkVerificationStatus();
-        _startVerificationCheck();
+        _startAutoCheck(); 
       }
     });
   }
 
+  
   Future<void> _checkVerificationStatus() async {
-    if (_isChecking) return;
+    if (_isChecking) return; /*to prevent multiple checkings at once */
 
     setState(() {
       _isChecking = true;
@@ -44,21 +45,22 @@ class _VerificationScreenState extends State<VerificationScreen> {
     try {
       await _authService.currentUser?.reload();
       final user = _authService.currentUser;
-      
+
       if (user != null && user.emailVerified) {
         setState(() {
           _isVerified = true;
         });
-        
+
         if (mounted) {
+          
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Email verified successfully!'),
               backgroundColor: Colors.green,
             ),
           );
+
           
-          // Navigate to home after a short delay
           Future.delayed(const Duration(seconds: 1), () {
             if (mounted) {
               Navigator.pushReplacementNamed(context, '/home');
@@ -67,7 +69,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         }
       }
     } catch (e) {
-      print('Error checking verification status: $e');
+      print('Error checking verification: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -77,6 +79,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
     }
   }
 
+  
   Future<void> _resendVerificationEmail() async {
     setState(() {
       _isResending = true;
@@ -86,11 +89,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
       final user = _authService.currentUser;
       if (user != null) {
         await user.sendEmailVerification();
-        
+
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Verification email sent! Please check your inbox.'),
+              content: Text('Verification email sent! Check your inbox.'),
               backgroundColor: Colors.green,
             ),
           );
@@ -100,7 +103,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error sending verification email: $e'),
+            content: Text('Error: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -118,19 +121,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 247, 247, 247),
-      appBar: AppBar(
-        title: const Text("Verify Your Email"),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: Colors.grey[800],
-      ),
+      appBar: AppStyles.buildAppBar('Email Verification'),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(30.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              
               Icon(
                 _isVerified ? Icons.check_circle : Icons.email_outlined,
                 size: 80,
@@ -138,7 +136,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     ? Colors.green
                     : const Color.fromARGB(255, 57, 3, 57),
               ),
-              const SizedBox(height: 30.0),
+              const SizedBox(height: 30),
+
+              
               Text(
                 _isVerified ? 'Email Verified!' : 'Check Your Email',
                 textAlign: TextAlign.center,
@@ -148,21 +148,22 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   color: Color.fromARGB(255, 57, 3, 57),
                 ),
               ),
-              const SizedBox(height: 15.0),
+              const SizedBox(height: 15),
+
+              
               Text(
                 _isVerified
                     ? 'Your email has been verified successfully. Redirecting...'
                     : 'We\'ve sent a verification link to:',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
               ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 10),
+
+              
               if (!_isVerified)
                 Container(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     color: Colors.purple[50],
                     borderRadius: BorderRadius.circular(10),
@@ -178,18 +179,21 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     ),
                   ),
                 ),
-              const SizedBox(height: 30.0),
+              const SizedBox(height: 30),
+
+              
               if (!_isVerified)
                 Text(
-                  'Please click the verification link in the email to verify your account. Once verified, you\'ll be automatically redirected.',
+                  'Please click the verification link in the email. '
+                  'Once verified, you\'ll be automatically redirected.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[700],
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                 ),
-              const SizedBox(height: 40.0),
-              if (!_isVerified)
+              const SizedBox(height: 40),
+
+              
+              if (!_isVerified) ...[
+               
                 ElevatedButton(
                   onPressed: _isResending ? null : _resendVerificationEmail,
                   style: ElevatedButton.styleFrom(
@@ -221,8 +225,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           ),
                         ),
                 ),
-              const SizedBox(height: 20.0),
-              if (!_isVerified)
+                const SizedBox(height: 20),
+
+                
                 ElevatedButton(
                   onPressed: _isChecking ? null : _checkVerificationStatus,
                   style: ElevatedButton.styleFrom(
@@ -242,8 +247,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           width: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Color(0xFF8A008A)),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Color(0xFF8A008A)),
                           ),
                         )
                       : const Text(
@@ -255,6 +260,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           ),
                         ),
                 ),
+              ],
+
+              
               if (_isVerified)
                 const SizedBox(
                   height: 40,
@@ -271,4 +279,3 @@ class _VerificationScreenState extends State<VerificationScreen> {
     );
   }
 }
-
